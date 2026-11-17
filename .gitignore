@@ -1,0 +1,43 @@
+# ============================================================
+#  学而刷题 —— Git 忽略规则
+# ============================================================
+
+# ---------- 后端构建与运行时数据 ----------
+backend/target/
+# H2 数据库文件：含用户账号与答题记录，绝不能提交
+backend/data/
+*.log
+jar-run.log
+jar-err.log
+
+# ---------- 前端 ----------
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+
+# ---------- 测试依赖 ----------
+# ws 仅用于浏览器自动化测试，通过 npm i ws 重建
+node_modules/
+
+# ---------- IDE ----------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.settings/
+.project
+.classpath
+
+# ---------- 系统 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# ---------- 临时文件 ----------
+*.tmp
+*.bak
+*.swp
+*.orig

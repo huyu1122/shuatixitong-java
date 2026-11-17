@@ -1,0 +1,70 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: quiz-server
+
+  # 默认使用 H2（内存模式），免安装即可运行
+  # 切换到 MySQL：用 --spring.profiles.active=mysql 启动
+  datasource:
+    url: jdbc:h2:file:./data/quizdb;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+  # 启动时导入题库（仅当题目表为空时执行）
+  sql:
+    init:
+      mode: never
+
+# 业务配置
+quiz:
+  # 会话 token 有效期（小时）
+  session-ttl-hours: 168
+  # 登录失败锁定：连续失败次数与锁定时长（分钟）
+  login-max-failures: 5
+  login-lock-minutes: 10
+  # 允许跨域的前端地址
+  cors-origins: "http://localhost:5173,http://127.0.0.1:5173"
+
+  # 默认管理员账号（首次启动自动创建，可用环境变量覆盖）
+  #   QUIZ_ADMIN_USERNAME / QUIZ_ADMIN_PASSWORD
+  admin:
+    username: admin
+    password: admin123
+
+logging:
+  level:
+    root: INFO
+    com.huyuhui.quiz: DEBUG
+
+---
+# ===== MySQL 配置（生产 / 答辩演示）=====
+spring:
+  config:
+    activate:
+      on-profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/quiz_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
